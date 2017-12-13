@@ -36,7 +36,7 @@ import tensorflow as tf
 
 from datasets import dataset_utils
 
-_NUM_VALIDATION = 5000
+_NUM_VALIDATION = 10000
 
 # Seed for repeatability.
 _RANDOM_SEED = 0
@@ -52,10 +52,11 @@ class ImageReader(object):
         # Initializes function that decodes RGB JPEG data.
         self._decode_jpeg_data = tf.placeholder(dtype=tf.string)
         self._decode_jpeg = tf.image.decode_jpeg(self._decode_jpeg_data, channels=3)
+        self._decode_jpeg = tf.image.resize_images(self._decode_jpeg, (320, 320))
 
     def read_image_dims(self, sess, image_data):
-        image = self.decode_jpeg(sess, image_data)
-        return image.shape[0], image.shape[1]
+        #image = self.decode_jpeg(sess, image_data)
+        return 320, 320
 
     def decode_jpeg(self, sess, image_data):
         image = sess.run(self._decode_jpeg,

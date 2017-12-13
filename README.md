@@ -1,3 +1,119 @@
+# 简介
+本代码为系列课程, 第七周部分的课后作业内容。
+http://edu.csdn.net/lecturer/1427
+
+## 作业1
+利用slim框架，做一个inceptionv4的迁移训练
+### 数据集
+本数据集拥有200个分类，每个分类300张图片，共计6W张图片，其中5W张作为训练集，1W张图片作为验证集。图片已经预打包为tfrecord格式并上传到tinymind上。地址如下：
+https://www.tinymind.com/dwSun/datasets/quiz
+
+
+### 预训练模型
+迁移训练需要一个预训练的模型作为checkpoint输入。作业使用的网络是inception_v4,所以这里我们使用tensorflow提供的预训练的inception_v4模型作为输入。文件已经预先上传到tinymind上，地址如下：
+https://www.tinymind.com/dwSun/datasets/inceptionv4ckpt
+
+### 模型
+模型代码来自：
+https://github.com/tensorflow/models/tree/master/research/slim
+
+这里为了适应本作业提供的数据集，稍作修改，添加了一个quiz数据集，实际使用的代码为：
+https://github.com/dwSun/quiz_slim
+
+
+在tinymind上新建一个模型，模型设置参考如下模型：
+https://www.tinymind.com/dwSun/quiz/settings
+模型参数的解释：
+
+- dataset_name quiz  # 数据集的名称，这里使用我们为本次作业专门做的quiz数据集
+- dataset_dir /data/dwSun/quiz  # tfrecord存放的目录，这个目录是建立模型的时候，由tinymind提供的
+- checkpoint_path /data/dwSun/inceptionv4ckpt/inception_v4.ckpt  # inceptionv4的预训练模型存放的位置，这个文件以数据集的形式使用，路径由tinymind提供。
+- model_name inception_v4  # 使用的网络的名称，本作业固定为inception_v4
+- checkpoint_exclude_scopes InceptionV4/Logits,InceptionV4/AuxLogits/Aux_logits  # 加载预训练模型的时候需要排除的变量scope，这两个是跟最后的分类器有关的变量scope。
+- train_dir /output/ckpt  # 训练目录，训练的中间文件和summary，checkpoint等都存放在这里，这个目录由tinymind提供，需要注意这个目录是需要写入的，使用其他目录可能会出现写入失败的情况。
+- learning_rate 0.001  # 学习率
+- optimizer rmsprop  # 优化器，关于优化器的区别请参考[这里](https://arxiv.org/abs/1609.04747)
+- moving_average_decay 0.9999  # MovingAverageDecay，具体内容请参考[这里](https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage)
+
+鼓励参与课程的学员尝试不同的参数组合以体验不同的参数对训练准确率和收敛速度的影响。
+
+### 结果评估
+在tinymind运行log的输出中，可以看到如下内容：
+```sh
+INFO:tensorflow:global step 5520: loss = 7.3213 (0.615 sec/step)
+INFO:tensorflow:Saving checkpoint to path /path/to/train_ckpt_den/model.ckpt
+INFO:tensorflow:Recording summary at step 5528.
+INFO:tensorflow:global step 5530: loss = 6.2101 (0.847 sec/step)
+INFO:tensorflow:global_step/sec: 1.56167
+INFO:tensorflow:global step 5540: loss = 6.4548 (0.641 sec/step)
+```
+
+其中的**Saving checkpoint to path**提示我们训练过程已经生成了一个checkpoint等我们去验证。可以在tinymind界面点击相应按钮对checkpoint进行验证。
+
+
+经过4～6个小时的训练，Top1（Accuracy）应不低于80%， Top5（Recall）应不低于90%。这两个指标将会作为作业及格的标准。
+>这里使用的数据和模型及相关参数，已经过课程相关人员评估。
+
+## 作业2
+
+学员自己实现一个densenet的网络，并插入到slim框架中进行训练。
+
+### 数据集
+同作业1
+
+### 模型
+模型代码来自：
+https://github.com/tensorflow/models/tree/master/research/slim
+
+这里为了适应本作业提供的数据集，稍作修改，添加了一个quiz数据集，实际使用的代码为：
+https://github.com/dwSun/quiz_slim
+
+其中nets目录下的densenet.py中已经定义了densenet网络的入口函数等，相应的辅助代码也都已经完成，学员只需要check或者fork这里的代码，添加自己的densenet实现并在tinymind上建立相应的模型即可。
+
+在tinymind上新建一个模型，模型设置参考如下模型：
+https://www.tinymind.com/dwSun/quiz-densenet/settings
+模型参数的解释同1，不同的地方：
+
+- checkpoint_path # 这里不使用这个参数
+- model_name densenet  # 使用的网络的名称，本作业固定为densenet
+- checkpoint_exclude_scopes  # 这里不使用这个参数
+
+鼓励参与课程的学员尝试不同的参数组合以体验不同的参数对训练准确率和收敛速度的影响。
+
+### 结果评估
+densenet的网络，效果要略好于inceptionv4。考虑到实现的不同，而且没有预训练模型，这里不对准确率做要求。只要训练运行成功即可认为及格。
+
+
+# 参考内容
+本地运行slim框架所用命令行：
+
+作业1
+```sh
+训练：
+python3 train_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --checkpoint_path=/path/to/inception_v4.ckpt --model_name=inception_v4 --checkpoint_exclude_scopes=InceptionV4/Logits,InceptionV4/AuxLogits/Aux_logits --train_dir=/path/to/train_ckpt --learning_rate=0.001 --optimizer=rmsprop --moving_average_decay=0.9999 --batch_size=32
+
+train集验证：
+python3 eval_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --dataset_split_name=train --model_name=inception_v4 --checkpoint_path=/path/to/train_ckpt --eval_dir=/path/to/train_eval --batch_size=32 --max_num_batches=32
+
+validation集验证：
+python3 eval_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --dataset_split_name=validation --model_name=inception_v4 --checkpoint_path=/path/to/train_ckpt --eval_dir=/path/to/validation_eval --batch_size=32 --max_num_batches=32
+
+```
+作业2
+```sh
+训练
+python3 train_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --model_name=densenet --train_dir=/path/to/train_ckpt_den --learning_rate=0.001 --optimizer=rmsprop --moving_average_decay=0.9999 --batch_size=16/path/to
+
+train集验证：
+python3 eval_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --dataset_split_name=train --model_name=densenet --checkpoint_path=/path/to/train_ckpt_den --eval_dir=/path/to/train_eval_den --batch_size=32 --max_num_batches=32
+
+validation集验证：
+python3 eval_image_classifier.py --dataset_name=quiz --dataset_dir=/path/to/data --dataset_split_name=validation --model_name=densenet --checkpoint_path=/path/to/train_ckpt_den --eval_dir=/path/to/validation_eval_den --batch_size=32 --max_num_batches=32
+
+```
+
+# 以下内容为slim官方介绍
+----
 # TensorFlow-Slim image classification model library
 
 [TF-slim](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/slim)

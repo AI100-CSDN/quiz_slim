@@ -28,8 +28,8 @@ def parse_args(check=True):
     return FLAGS, unparsed
 
 
-train_cmd = 'python train_image_classifier.py  --dataset_name={dataset_name} --dataset_dir={dataset_dir} --checkpoint_path={checkpoint_path} --model_name={model_name} --checkpoint_exclude_scopes={checkpoint_exclude_scopes} --train_dir={train_dir} --learning_rate={learning_rate} --optimizer={optimizer} --batch_size={batch_size} --max_number_of_steps={max_number_of_steps}'
-eval_cmd = 'python3 eval_image_classifier.py --dataset_name={dataset_name} --dataset_dir={dataset_dir} --dataset_split_name={dataset_split_name} --model_name={model_name}   --checkpoint_path={checkpoint_path}  --eval_dir={eval_dir} --batch_size={batch_size}  --max_num_batches={max_num_batches}'
+train_cmd = 'python3 ./train_image_classifier.py  --dataset_name={dataset_name} --dataset_dir={dataset_dir} --checkpoint_path={checkpoint_path} --model_name={model_name} --checkpoint_exclude_scopes={checkpoint_exclude_scopes} --train_dir={train_dir} --learning_rate={learning_rate} --optimizer={optimizer} --batch_size={batch_size} --max_number_of_steps={max_number_of_steps}'
+eval_cmd = 'python3 ./eval_image_classifier.py --dataset_name={dataset_name} --dataset_dir={dataset_dir} --dataset_split_name={dataset_split_name} --model_name={model_name}   --checkpoint_path={checkpoint_path}  --eval_dir={eval_dir} --batch_size={batch_size}  --max_num_batches={max_num_batches}'
 
 if __name__ == '__main__':
     FLAGS, unparsed = parse_args()

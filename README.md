@@ -60,10 +60,16 @@ https://www.tinymind.com/dwSun/quiz-w7-1/settings
 模型代码来自：
 https://github.com/tensorflow/models/tree/master/research/slim
 
+
 这里为了适应本作业提供的数据集，稍作修改，添加了一个quiz数据集以及一个训练并验证的脚本，实际使用的代码为：
 https://github.com/dwSun/quiz_slim
 
+
 其中nets目录下的densenet.py中已经定义了densenet网络的入口函数等，相应的辅助代码也都已经完成，学员只需要check或者fork这里的代码，添加自己的densenet实现并在tinymind上建立相应的模型即可。
+
+
+densenet论文参考 https://arxiv.org/abs/1608.06993
+
 
 在tinymind上新建一个模型，模型设置参考如下模型：
 https://www.tinymind.com/dwSun/quiz-w7-2-densenet/settings

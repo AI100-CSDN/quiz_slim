@@ -33,6 +33,10 @@ eval_cmd = 'python3 ./eval_image_classifier.py --dataset_name={dataset_name} --d
 
 if __name__ == '__main__':
     FLAGS, unparsed = parse_args()
+    print('current working dir [{0}]'.format(os.getcwd()))
+    w_d = os.path.dirname(os.path.abspath(__file__))
+    print('change wording dir to [{0}]'.format(w_d))
+    os.chdir(w_d)
 
     step_per_epoch = 50000 // FLAGS.batch_size
     for i in range(30):
@@ -55,5 +59,3 @@ if __name__ == '__main__':
                                         'eval_dir': FLAGS. eval_dir, 'max_num_batches': FLAGS. max_num_batches}))
         for l in p:
             print(p.strip())
-
-    print(FLAGS.optimizer)

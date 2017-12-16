@@ -11,7 +11,7 @@ https://www.tinymind.com/ai100/datasets/quiz-w7
 
 ### 预训练模型
 迁移训练需要一个预训练的模型作为checkpoint输入。作业使用的网络是inception_v4,所以这里我们使用tensorflow提供的预训练的inception_v4模型作为输入。文件已经预先上传到tinymind上，地址如下：
-https://www.tinymind.com/ai100/datasets/inceptionv4ckpt
+https://www.tinymind.com/ai100/datasets/inception-v4-ckpt
 
 ### 模型
 模型代码来自：
@@ -27,7 +27,7 @@ https://www.tinymind.com/ai100/quiz-w7-1/settings
 
 - dataset_name quiz  # 数据集的名称，这里使用我们为本次作业专门做的quiz数据集
 - dataset_dir /data/ai100/quiz-w7  # tfrecord存放的目录，这个目录是建立模型的时候，由tinymind提供的
-- checkpoint_path /data/ai100/inceptionv4ckpt/inception_v4.ckpt  # inceptionv4的预训练模型存放的位置，这个文件以数据集的形式使用，路径由tinymind提供。
+- checkpoint_path /data/ai100/inception-v4-ckpt/inception_v4.ckpt  # inceptionv4的预训练模型存放的位置，这个文件以数据集的形式使用，路径由tinymind提供。
 - model_name inception_v4  # 使用的网络的名称，本作业固定为inception_v4
 - checkpoint_exclude_scopes InceptionV4/Logits,InceptionV4/AuxLogits/Aux_logits  # 加载预训练模型的时候需要排除的变量scope，这两个是跟最后的分类器有关的变量scope。
 - train_dir /output/ckpt  # 训练目录，训练的中间文件和summary，checkpoint等都存放在这里，这个目录也是验证过程的checkpoint_path参数， 这个目录由tinymind提供，需要注意这个目录是需要写入的，使用其他目录可能会出现写入失败的情况。

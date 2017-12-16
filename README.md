@@ -6,28 +6,28 @@ http://edu.csdn.net/lecturer/1427
 利用slim框架，做一个inceptionv4的迁移训练
 ### 数据集
 本数据集拥有200个分类，每个分类300张图片，共计6W张图片，其中5W张作为训练集，1W张图片作为验证集。图片已经预打包为tfrecord格式并上传到tinymind上。地址如下：
-https://www.tinymind.com/dwSun/datasets/quiz
+https://www.tinymind.com/ai100/datasets/quiz-w7
 
 
 ### 预训练模型
 迁移训练需要一个预训练的模型作为checkpoint输入。作业使用的网络是inception_v4,所以这里我们使用tensorflow提供的预训练的inception_v4模型作为输入。文件已经预先上传到tinymind上，地址如下：
-https://www.tinymind.com/dwSun/datasets/inceptionv4ckpt
+https://www.tinymind.com/ai100/datasets/inceptionv4ckpt
 
 ### 模型
 模型代码来自：
 https://github.com/tensorflow/models/tree/master/research/slim
 
 这里为了适应本作业提供的数据集，稍作修改，添加了一个quiz数据集以及一个训练并验证的脚本，实际使用的代码为：
-https://github.com/dwSun/quiz_slim
+https://github.com/AI100-CSDN/quiz_slim
 
 
 在tinymind上新建一个模型，模型设置参考如下模型：
-https://www.tinymind.com/dwSun/quiz-w7-1/settings
+https://www.tinymind.com/ai100/quiz-w7-1/settings
 模型参数的解释：
 
 - dataset_name quiz  # 数据集的名称，这里使用我们为本次作业专门做的quiz数据集
-- dataset_dir /data/dwSun/quiz  # tfrecord存放的目录，这个目录是建立模型的时候，由tinymind提供的
-- checkpoint_path /data/dwSun/inceptionv4ckpt/inception_v4.ckpt  # inceptionv4的预训练模型存放的位置，这个文件以数据集的形式使用，路径由tinymind提供。
+- dataset_dir /data/ai100/quiz-w7  # tfrecord存放的目录，这个目录是建立模型的时候，由tinymind提供的
+- checkpoint_path /data/ai100/inceptionv4ckpt/inception_v4.ckpt  # inceptionv4的预训练模型存放的位置，这个文件以数据集的形式使用，路径由tinymind提供。
 - model_name inception_v4  # 使用的网络的名称，本作业固定为inception_v4
 - checkpoint_exclude_scopes InceptionV4/Logits,InceptionV4/AuxLogits/Aux_logits  # 加载预训练模型的时候需要排除的变量scope，这两个是跟最后的分类器有关的变量scope。
 - train_dir /output/ckpt  # 训练目录，训练的中间文件和summary，checkpoint等都存放在这里，这个目录也是验证过程的checkpoint_path参数， 这个目录由tinymind提供，需要注意这个目录是需要写入的，使用其他目录可能会出现写入失败的情况。
@@ -64,7 +64,7 @@ https://github.com/tensorflow/models/tree/master/research/slim
 
 
 这里为了适应本作业提供的数据集，稍作修改，添加了一个quiz数据集以及一个训练并验证的脚本，实际使用的代码为：
-https://github.com/dwSun/quiz_slim
+https://github.com/AI100-CSDN/quiz_slim
 
 
 其中nets目录下的densenet.py中已经定义了densenet网络的入口函数等，相应的辅助代码也都已经完成，学员只需要check或者fork这里的代码，添加自己的densenet实现并在tinymind上建立相应的模型即可。
@@ -74,7 +74,7 @@ densenet论文参考 https://arxiv.org/abs/1608.06993
 
 
 在tinymind上新建一个模型，模型设置参考如下模型：
-https://www.tinymind.com/dwSun/quiz-w7-2-densenet/settings
+https://www.tinymind.com/ai100/quiz-w7-2-densenet/settings
 模型参数的解释同1，不同的地方：
 
 - checkpoint_path # 因为没有预训练的模型，这里不使用这个参数
